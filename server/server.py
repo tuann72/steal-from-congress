@@ -1,15 +1,17 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
+import requests
 
 app = Flask(__name__)
 CORS(app)
 
 
-@app.route("/api/home", methods=["GET"])
+@app.route("/api", methods=["GET"])
 def return_home():
-    return jsonify(
-        {"message": "This text is different!", "people": ["Jack", "Harry", "Bill"]}
-    )
+    url = "https://house-stock-watcher-data.s3-us-west-2.amazonaws.com/data/all_transactions.json"
+    response = requests.get(url)
+    data = response.json()
+    return jsonify(data)
 
 
 if __name__ == "__main__":
